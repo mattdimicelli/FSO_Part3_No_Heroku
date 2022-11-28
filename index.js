@@ -32,9 +32,18 @@ app.get('/api/persons', (req, res) => {
 });
 
 app.post('/api/persons', (req, res) => {
-  const body = req.body;
+  const { name, number } = req.body;
+  if (!name?.trim() && !number?.trim()) {
+    res.status(400).json({ error: 'name and number are missing'});
+  }
+  else if (!name?.trim()) {
+    res.status(400).json({ error: 'name is missing'});
+  }
+  else if (!number?.trim()) {
+    res.status(400).json({ error: 'name is missing'});
+  }
   const id = Math.floor(Math.random() * 10000000);
-  const person = {...body, id };
+  const person = { name, number, id };
   persons.push(person);
   res.send(person);
 });
