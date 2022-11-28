@@ -2,7 +2,7 @@ const express = require('express');
 
 const app = express();
 
-const persons = [
+let persons = [
     { 
       "name": "Arto Hellas", 
       "number": "040-123456",
@@ -35,6 +35,18 @@ app.get('/api/persons/:id', (req, res) => {
   if (person) {
     res.json(person);
   }
+  else {
+    res.status(404).end();
+  }
+});
+
+app.delete('/api/persons/:id', (req, res) => {
+  const id = Number(req.params.id);
+  const person = persons.find(person => person.id === id);
+  if (person) {
+    persons = persons.filter(person => person.id !== id);
+    res.status(204).end(); // 204 === No Content (request succeeded but client doesn't need to navigate away from page)
+  }   
   else {
     res.status(404).end();
   }
