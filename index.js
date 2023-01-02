@@ -1,5 +1,5 @@
 const express = require('express');
-const morgan = require('morgan');
+// const morgan = require('morgan');
 const cors = require('cors');
 
 
@@ -7,16 +7,16 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use(morgan(function (tokens, req, res) {
-  return [
-    tokens.method(req, res),
-    tokens.url(req, res),
-    tokens.status(req, res),
-    tokens.res(req, res, 'content-length'), '-',
-    tokens['response-time'](req, res), 'ms',
-      JSON.stringify(req.body)
-  ].join(' ')
-}));
+// app.use(morgan(function (tokens, req, res) {
+//   return [
+//     tokens.method(req, res),
+//     tokens.url(req, res),
+//     tokens.status(req, res),
+//     tokens.res(req, res, 'content-length'), '-',
+//     tokens['response-time'](req, res), 'ms',
+//       JSON.stringify(req.body)
+//   ].join(' ')
+// }));
 
 let persons = [
     { 
@@ -88,6 +88,7 @@ app.get('/info', (req, res) => {
   res.send(html);
 });
 
-const PORT = 3001;
-app.listen(PORT);
-console.log(`Server listening on port ${PORT}`);
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`);
+});
