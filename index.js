@@ -1,9 +1,11 @@
 const express = require('express');
 const morgan = require('morgan');
+const cors = require('cors');
 
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 app.use(morgan(function (tokens, req, res) {
   return [
@@ -46,16 +48,16 @@ app.get('/api/persons', (req, res) => {
 app.post('/api/persons', (req, res) => {
   const { name, number } = req.body;
   if (name == null || number == null) {
-    res.status(400).json({ error: 'name and/or number are missing'});
+    return res.status(400).json({ error: 'name and/or number are missing'});
   } else if ( name.trim() === '' || number.trim() === '') {
-    res.status(400).json({ error: 'name and/or number are missing'});
+    return res.status(400).json({ error: 'name and/or number are missing'});
   } else if (persons.find(p => p.name === name.trim()) !== undefined) {
-    res.status(400).json({ error: 'there is already an entry with this name'});
+    return res.status(400).json({ error: 'there is already an entry with this name'});
   }
   const id = Math.floor(Math.random() * 10000000);
   const person = { name, number, id };
   persons.push(person);
-  res.send(person);
+  res.json(person);
 });
 
 app.get('/api/persons/:id', (req, res) => {
